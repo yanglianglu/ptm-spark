@@ -7,23 +7,18 @@ ENV PYSPARK_PYTHON=python3 \
     
 # Switch to root user for installation
 USER 0
-RUN apt-get update && apt-get install -y python3-dev python3-venv
+RUN apt-get update && apt-get install -y python3-dev python3-venv git
 RUN mkdir -p /home/spark/ && \
     chown -R spark:spark /home/spark
 
-
-# Copy application files
-COPY spark_dev.py spark_dev.py
-COPY spark_dev.ipynb spark_dev.ipynb
-COPY requirements.txt requirements.txt
-
+RUN git clone https://github.com/yanglianglu/ptm-spark.git
 
 
 # Create virtual environment and install dependencies
 RUN python3 -m venv ${SPARK_WORK_DIR}/venv && \
     . ${SPARK_WORK_DIR}/venv/bin/activate && \
     pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install -r ptm-spark/requirements.txt
 
 
 # Expose necessary ports
