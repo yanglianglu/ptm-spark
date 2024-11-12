@@ -4,3 +4,5 @@ pyarrow==18.0.0
 scikit-learn==1.5.2
 numpy==1.26.4
 apache-sedona==1.6.1
+jupyterlab==4.2.0
+notebook==7.2.2
