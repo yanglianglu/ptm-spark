@@ -11,7 +11,6 @@ pipeline {
         IMAGE_TAG = "dev"
         DOCKER_REGISTRY = "http://localhost:52322/"  // Replace with your registry, if different
     }
-    }
     stages {
         stage('Build') {
             steps {
