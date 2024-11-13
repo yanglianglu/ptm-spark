@@ -1,6 +1,10 @@
 pipeline {
-    agent any
-
+    agent {
+        docker {
+            image 'docker:20.10.7' // Use the Docker image with Docker CLI installed
+            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock --network host' // Access to host Docker daemon
+        }
+    }
     environment {
         IMAGE_NAME = "spark"
         IMAGE_TAG = "dev"
@@ -9,21 +13,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                script {
-                    
-                    // Build the Docker image
-                    def image = docker.build("${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}", "-f Dockerfile .")
-                }
+                sh 'docker version' // Verify Docker is available
+                sh 'docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} -f Dockerfile .'
             }
         }
         stage('Push to Registry') {
             steps {
-                script {
-                    // Push the Docker image to registry
-                    docker.withRegistry("http://${REGISTRY}", 'registry-credentials-id') {
-                        docker.image("${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}").push()
-                    }
-                }
+                sh 'docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}'
             }
         }
     }
