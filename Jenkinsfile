@@ -13,5 +13,6 @@ pipeline {
                 sh 'echo "Deploying application..."'
                 // Example for a Docker deployment: sh 'docker push your-image:tag'
             }
+        }   
     }
 }
