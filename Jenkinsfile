@@ -7,12 +7,24 @@ pipeline {
         REGISTRY = "localhost:52322"  // Replace with your Docker registry
     }
     stages {
-        stage('Deploy') {
+        stage('Build') {
             steps {
-                // Deploy the build artifacts or Docker images to a registry/server
-                sh 'echo "Deploying application..."'
-                // Example for a Docker deployment: sh 'docker push your-image:tag'
+                script {
+                    
+                    // Build the Docker image
+                    def image = docker.build("${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}", "-f Dockerfile .")
+                }
             }
-        }   
+        }
+        stage('Push to Registry') {
+            steps {
+                script {
+                    // Push the Docker image to registry
+                    docker.withRegistry("http://${REGISTRY}", 'registry-credentials-id') {
+                        docker.image("${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}").push()
+                    }
+                }
+            }
+        }
     }
 }
