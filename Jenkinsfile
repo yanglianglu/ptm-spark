@@ -6,7 +6,5 @@ pipeline {
         IMAGE_TAG = "dev"
         REGISTRY = "localhost:52322"  // Replace with your Docker registry
     }
-    stages {
-        
-    }
+
 }
