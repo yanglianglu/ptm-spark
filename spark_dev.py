@@ -13,7 +13,6 @@ data = [
     {"name": "Bob", "age": 17, "city": "San Francisco"},
     {"name": "Charlie", "age": 35, "city": "Los Angeles"},
     {"name": "David", "age": 15, "city": "Chicago"},
-    {"name": "Eve", "age": 29, "city": "Miami"}
 ]
 
 df = spark.createDataFrame(data)
